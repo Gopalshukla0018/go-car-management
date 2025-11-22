@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	// 1. Connect to Database
+	// 1. Connect to Database	
 	db := driver.ConnectDB()
 
 	// 2. Initialize Stores
