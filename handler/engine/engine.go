@@ -24,6 +24,12 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	
+	if err := models.ValidateEngineRequest(req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	resp, err := h.service.CreateEngine(r.Context(), req)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -35,10 +41,8 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
-	// Extract ID from URL path (basic implementation)
-	// Assuming path is /engines/{id}
 	parts := strings.Split(r.URL.Path, "/")
-	if len(parts) < 2 {
+	if len(parts) < 3 { 
 		http.Error(w, "Missing ID", http.StatusBadRequest)
 		return 
 	}

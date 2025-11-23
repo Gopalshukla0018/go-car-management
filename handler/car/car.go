@@ -24,8 +24,10 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Validate using the model's validation function (requires making the function public or calling it here if accessible)
-	// Assuming implicit validation in service or strict decoding
+	if err := models.ValidateCarRequest(req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
 	resp, err := h.service.CreateCar(r.Context(), req)
 	if err != nil {
