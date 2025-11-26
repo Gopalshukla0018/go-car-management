@@ -2,6 +2,7 @@ package car
 
 import (
 	"context"
+
 	"github.com/Gopalshukla0018/go-car-management/models"
 	"github.com/Gopalshukla0018/go-car-management/store"
 )
@@ -24,4 +25,13 @@ func (s *Service) CreateCar(ctx context.Context, req models.CarRequest) (models.
 
 func (s *Service) GetCarsByBrand(ctx context.Context, brand string) ([]models.Car, error) {
 	return s.store.GetCarBrand(ctx, brand)
+}
+
+func (s *Service) UpdateCar(ctx context.Context, id string, req models.CarRequest) (models.Car, error) {
+
+	return s.store.UpdateCar(ctx, id, &req)
+}
+
+func (s *Service) DeleteCar(ctx context.Context, id string) error {
+	return s.store.DeleteCar(ctx, id)
 }

@@ -18,13 +18,11 @@ import (
 func main() {
 
 	err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Error loading .env file")
-    }
-
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	db := driver.ConnectDB()
-
 
 	eStore := engineStore.New(db)
 	cStore := carStore.New(db)
@@ -32,18 +30,18 @@ func main() {
 	eService := engineService.New(eStore)
 	cService := carService.New(cStore)
 
-
 	eHandler := engineHandler.New(eService)
 	cHandler := carHandler.New(cService)
 
-
 	http.HandleFunc("POST /engines", eHandler.Create)
-	http.HandleFunc("GET /engines/", eHandler.GetByID) 
-	
+	http.HandleFunc("GET /engines/", eHandler.GetByID)
+
 	http.HandleFunc("POST /cars", cHandler.Create)
 	http.HandleFunc("GET /cars/", cHandler.GetByID)
 
-	
+	http.HandleFunc("PUT /cars/", cHandler.Update)
+	http.HandleFunc("DELETE /cars/", cHandler.Delete)
+
 	fmt.Println("Server starting on port 8000...")
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
